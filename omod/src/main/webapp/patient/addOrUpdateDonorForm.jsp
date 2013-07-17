@@ -6,15 +6,23 @@
 
 <br/>
 <div id="wrapper">
-	<div id="leftCol" style="float:left; min-width:500px">
+<table>
+<tr>
+<td style="vertical-align:top;">
+	<div id="leftCol" style="float:left;">
 		<form class="box" id="addDonorForm" method="post">
 			<div class="boxHeader">Search Donor by Name</div>
-			<div>
-				<div>
 					<div style="margin-top:12px;"><spring:message code="bloodbank.donor.name"/></div>
 					<div style="margin-top:12px;display: inline-table;"><input type="text" id="donorName" name="donorName" value="" onblur="capitalize()" style="min-width:600px;"/></div>
-				</div>
-				<!-- 
+					<input id="donId" name="donId" type="hidden" value="${donorIdentifier }"></input>
+			</div>	
+			
+			
+			
+			
+			
+ 	 <div style="display:none">
+				
 				<div style="margin-top:12px;"><spring:message code="bloodbank.donor.fatherhusbandname"/></div>
 				<div style="margin-top:12px;display: inline-table;"><input type="text" id="fatherHusbandName" name="fatherHusbandName" value="" onblur="capitalize()" style="width:400px;"/></div><br/>
 				<div style="margin-top:12px;display: inline-table;"><spring:message code="bloodbank.patient.id"/>&nbsp;&nbsp;&nbsp;</div><div style="margin-top:12px;display: inline-table;"><b>${patientIdentifier }</b></div>
@@ -24,7 +32,7 @@
 					<input id="existPat" name="existPat" type="hidden" value=""></input>
 					<input id="existId" name="existId" type="hidden" value=""></input>
 				</div>
-			</div>
+			
 			<div>
 				<div style="margin-top:12px;margin-bottom:2px;display: inline-table;"><spring:message code="bloodbank.donor.id"/>&nbsp;&nbsp;&nbsp;</div><div id="donIdShow" style="margin-top:12px;display: inline-table;"><b>${donorIdentifier }</b></div>
 				<div style="margin-top:12px;display: inline-table;"><input  style="margin-top:12px;display: inline-table;" type="checkbox" name="preregistered" id="preregistered" onchange="openIdField();" value="" ><spring:message code="bloodbank.preregistered.id"/></div>
@@ -46,7 +54,7 @@
 
 				 <div style="margin-top:12px;"><spring:message code="bloodbank.donor.address2"/></div>
 				<div><input type="text" id="donorAddress2" name="donorAddress2" value=""  style="width:600px;"/></div>
-				<div style="display: none;">
+				
 					<div><spring:message code="bloodbank.donor.cityVillage"/></div>
 					<div><input type="text" id="cityVillage" name="cityVillage" value="" style="width:600px;"/></div>
 					<div><spring:message code="bloodbank.donor.neighborhoodCell"/></div>
@@ -65,12 +73,12 @@
 					<div><input type="text" id="country" name="country" value="" style="width:600px;"/></div>
 					<div><spring:message code="bloodbank.donor.postalCode"/></div>
 					<div><input type="text" id="postalCode" name="postalCode" value="" style="width:600px;"/></div>	
-				</div>
 			</div>
-			<div> <input  style="margin-top:12px;" id="saveButton" name="saveButton" disabled="true" type="submit" value="<spring:message code="general.save"/>"/> <b id="savemessage" style="display:none; color:red">Already existing!</b> </div>
-		</form>-->
-	</div> 
-	</div>
+			
+		</div>
+		</form>
+	</td>
+   <td style="vertical-align:top;">
 	<!--Right colstart -->
 	<div id="rightCol" style="float:right; width:700px">
 		<div class="box" style="margin-left:4px;">
@@ -78,25 +86,15 @@
 			<div id="display" name="display"></div>
 		</div>
 	</div>
+   </td>
+   </tr>
+   </table>
 </div>
 <script>
 jQuery(document).ready(function(){
 
 	jQuery("#donorName").focus();
-	
-	
-	jQuery("#donorDob").datepicker({
-		showOn: 'button',
-	    buttonImage: '${pageContext.request.contextPath}/moduleResources/bloodbank/styles/images/calendar.gif',
-	    buttonImageOnly: true,
-	    changeMonth: true,
-	    changeYear: true,
-	    yearRange: '-100:+0',
-	    maxDate: '+0D',
-	    dateFormat: 'dd/mm/yy',
-	    constrainInput: false,
-	    onClose: function() { jQuery("#donorDob").focus();jQuery("#donorAddress1").focus() }
-	});
+
 	
 	    jQuery.ajaxSetup ({  
 		         cache: false  
@@ -107,18 +105,6 @@ jQuery(document).ready(function(){
 
 // show prep id filed
 	var visible = false;
-	
-	function openIdField(){
-		if(!document.getElementById("preregistered").checked){
-			jQuery('#idField').hide();
-			visible = false;
-			}else{
-		jQuery('#idField').css("display", "inline-table");
-		jQuery('#donorPrepId').css("width", "300px");
-		visible=true;
-		validateForm();
-		}
-	}
 
 	//ajax images to show
      var ajax_load = "<img src='${pageContext.request.contextPath}/moduleResources/bloodbank/scripts/jquery/css/images/ui-anim_basic_16x16.gif' alt='loading...' />";
@@ -168,7 +154,7 @@ jQuery(document).ready(function(){
 	function validateId(){
 		if(jQuery("#existId").attr('value')=="yes"){
 			var newVal = jQuery("#donorPrepId").val();
-			jQuery("#donId").attr('value',newVal);
+			
 			jQuery("#donIdShow").html(newVal); 
 			
   			 jQuery("#valid").html(ajax_ok);
@@ -213,7 +199,7 @@ jQuery(document).ready(function(){
              var name = jQuery("#donorName").attr('value');
 			 var fatherhusband = jQuery("#fatherHusbandName").attr('value');
              var patidentifier = jQuery("#patId").attr('value');
-             var donidentifier = jQuery("#donId").attr('value');
+             
              var birthdate = jQuery("#donorDob").attr('value');
              var address = jQuery("#donorAddress1").attr('value');
 			 var idValid = jQuery("#existId").attr('value');
@@ -227,25 +213,7 @@ jQuery(document).ready(function(){
              	return ( name!="" && idValid=="yes" && noPatients && patidentifier!="" && patidentifier!=undefined && donidentifier!="" && donidentifier!=undefined && birthdate!="" && address!="");
              }
                           
-			if(jQuery("#preregistered").attr('checked') == false){
-             if(dataEnteredisValid()){
-		       	document.getElementById("saveButton").disabled = false;
-				if(!noPatients){
-					document.getElementById("savemessage").style.display="block";
-					document.getElementById("saveButton").value="Save anyway";
-				}
-             }
-             else{
-                 document.getElementById("saveButton").disabled = true;
-             }
-			}else{
-	             if(dataEnteredisValid2()){
-	                 document.getElementById("saveButton").disabled = false;
-	             }
-	             else{ 
-	                 document.getElementById("saveButton").disabled = true;
-	             }
-				}      
+			    
          }
       
 </script>
